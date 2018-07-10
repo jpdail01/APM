@@ -9,12 +9,11 @@ import 'rxjs/add/operator/do';
 export class ProductService {
   private productUrl = './api/products/products.json';
 
-  constructor(private http: HttpClient) {
-
-  }
+  constructor(private http: HttpClient) {}
 
   getProducts(): Observable<IProduct[]> {
-    return this.http.get<IProduct[]>(this.productUrl)
+    return this.http
+      .get<IProduct[]>(this.productUrl)
       .do(data => console.log('All: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
@@ -23,4 +22,12 @@ export class ProductService {
     console.log(err.message);
     return Observable.throw(err.message);
   }
+
+  // getProduct(id: number): IProduct {
+  //   return this.http
+  //     .get<IProduct[]>(this.productUrl).pipe();
+
+  //   // return this.http.get<IProduct>(`${this.productUrl}/${id}`);
+  //   // return products[id];
+  // }
 }

@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
-  selector: 'pm-products',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
@@ -23,25 +22,25 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
   set listFilter(value: string) {
     this._listfilter = value;
-    this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products;
+    this.filteredProducts = this.listFilter
+      ? this.performFilter(this.listFilter)
+      : this.products;
   }
 
   filteredProducts: IProduct[];
   products: IProduct[];
 
-  constructor(private productService: ProductService) {
-  }
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.productSubscription = this.productService.getProducts()
-      .subscribe(
-        products => {
-          this.products = products;
-          this.filteredProducts = this.products;
-        },
-        error => this.errorMessage = <any>error,
-        () => {} // complete
-      );
+    this.productSubscription = this.productService.getProducts().subscribe(
+      products => {
+        this.products = products;
+        this.filteredProducts = this.products;
+      },
+      error => (this.errorMessage = <any>error),
+      () => {} // complete
+    );
   }
 
   ngOnDestroy(): void {
@@ -54,8 +53,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   performFilter(filterBy: string): IProduct[] {
     filterBy = filterBy.toLocaleLowerCase();
-    return this.products.filter((product: IProduct) =>
-      product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1);
+    return this.products.filter(
+      (product: IProduct) =>
+        product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1
+    );
   }
 
   onRatingClicked(message: string): void {
